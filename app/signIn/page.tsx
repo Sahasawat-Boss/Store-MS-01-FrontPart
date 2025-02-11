@@ -8,9 +8,11 @@ import Swal from "sweetalert2"; // UI Modal Library
 const SignIn = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false)
 
     const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault(); // Prevent form from refreshing
+        setLoading(true); // Start loading
 
         try {
             const payload = { username, password };
@@ -62,10 +64,37 @@ const SignIn = () => {
                         />
                     </div>
                     <button
-                        type="submit" // Ensure button submits form
-                        className="w-full mt-4 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition"
+                        type="submit"
+                        className="w-full mt-4 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center"
+                        disabled={loading} // Disable when loading
                     >
-                        Sign In
+                        {loading ? (
+                            <>
+                                <svg
+                                    className="animate-spin h-5 w-5 mr-2 text-white"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <circle
+                                        className="opacity-25"
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        stroke="currentColor"
+                                        strokeWidth="4"
+                                    ></circle>
+                                    <path
+                                        className="opacity-75"
+                                        fill="currentColor"
+                                        d="M4 12a8 8 0 018-8v8H4z"
+                                    ></path>
+                                </svg>
+                                Loading...
+                            </>
+                        ) : (
+                            "Sign In"
+                        )}
                     </button>
                 </form>
             </div>
