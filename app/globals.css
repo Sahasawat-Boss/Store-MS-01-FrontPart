@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom scrollbar for Webkit browsers (Chrome, Safari, Edge) */
+/* Firefox Scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(102, 102, 102) #000000;
+}
+/* Custom scrollbar for Webkit browsers (Chrome, Safari, Edge) */
