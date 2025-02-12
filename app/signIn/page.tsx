@@ -27,22 +27,17 @@ const SignIn = () => {
                 localStorage.setItem("token", token);
                 router.push('/dashboard')
 
-                // ✅ Show modal with username, password, and token
+                // --------Show modal Sucess
                 Swal.fire({
-                    title: "🚀 Welcome Back!",
+                    title: " Welcome Back!",
                     html: `
                         <div style="text-align: left; font-size: 16px;">
                             <strong>Username:</strong> ${username} <br>
-                            <strong>Password:</strong> ***** <br>
-                            <strong>Token:</strong> 
-                            <textarea style="width:100%;height:80px;" readonly>${token}</textarea>
-                            <br><br>
-                            <img src="https://i.pinimg.com/originals/23/51/bc/2351bc65b2b5d75cef146b7edddf805b.gif" alt="Success" 
-                                style="display: block; margin: 10px auto; border-radius: 10px; max-width: 100%;" />
                         </div>
                     `,
                     icon: "success",
                     confirmButtonText: "OK",
+                    confirmButtonColor: "#4346db", // Indigo-800
                     showClass: {
                         popup: "animate__animated animate__fadeInDown",
                     },
@@ -55,18 +50,31 @@ const SignIn = () => {
                 setUsername("");
                 setPassword("");
             } else {
+                // --------Show modal Warning
                 Swal.fire({
-                    title: "⚠️ ตรวจสอบ user",
-                    text: "ชื่อผู้ใช้งาน หรือ รหัสผ่านไม่ถูกต้อง",
+                    title: "Invalid Login",
+                    text: "The username or password is incorrect. Please try again.",
                     icon: "warning",
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#4346db", // Indigo-800
+                    showClass: {
+                        popup: "animate__animated animate__shakeX",
+                    },
                 });
             }
         } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : "เกิดข้อผิดพลาด";
+            const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
+
+            // --------Show modal Error
             Swal.fire({
-                title: "❌ Invalid",
+                title: "Login Failed",
                 text: errorMessage,
                 icon: "error",
+                confirmButtonText: "OK",
+                confirmButtonColor: "#4346db", // Indigo-800
+                showClass: {
+                    popup: "animate__animated animate__shakeX",
+                },
             });
         } finally {
             setLoading(false);
@@ -75,7 +83,7 @@ const SignIn = () => {
 
     return (
         <main className="flex items-center justify-center w-screen bg-gradient-to-r from-black via-gray-950 to-gray-800 ">
-            
+
             {/*Sign In Form*/}
             <div className=" bg-gray-900 p-8 rounded-lg shadow-lg border border-gray-700 text-white transition-all duration-300">
                 <h2 className="text-3xl font-extrabold text-center mb-6 text-gray-200">Sign In</h2>
@@ -102,11 +110,11 @@ const SignIn = () => {
                     </div>
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2 rounded hover:shadow-xl hover:scale-105 transform transition-all duration-200"
+                        className="w-full h-10 bg-gradient-to-r from-blue-600 to-indigo-800 text-white rounded hover:shadow-xl hover:scale-105 transform transition-all duration-200"
                         disabled={loading}
                     >
                         {loading ? (
-                            <>
+                            <div className="h-10 flex justify-center items-center bg-gray-400">
                                 <svg
                                     className="animate-spin h-5 w-5 mr-2 text-white"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +136,7 @@ const SignIn = () => {
                                     ></path>
                                 </svg>
                                 Logging In...
-                            </>
+                            </div>
                         ) : (
                             "Sign In"
                         )}

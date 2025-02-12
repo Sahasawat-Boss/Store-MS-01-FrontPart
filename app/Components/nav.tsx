@@ -7,14 +7,13 @@ const Navbar = () => {
 
     return (
         <nav className="bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white shadow-md">
-            <div className="container mx-auto py-4 flex justify-between space-x-8">
-                <button onClick={() => router.push("/")} className="hover:text-blue-400 transition">
+            <div className="container mx-auto py-6 flex justify-between space-x-8">
+                <button onClick={() => router.push("/")} className="hover:text-blue-400 transition text-lg">
                     Store-MS-01
                 </button>
-                <div className="text-sm">
-                    Setting
-                    Setting
-                    Setting
+                <div className="text-sm flex gap-4">
+                    <ul>About</ul>
+                    <ul>SIgn in</ul>
                 </div>
 
             </div>

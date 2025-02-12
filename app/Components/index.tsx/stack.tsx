@@ -5,10 +5,10 @@ import { SiNextdotjs, SiExpress, SiPrisma, SiMongodb } from "react-icons/si";
 
 const Stack = () => {
     return (
-        <section className="py-4 bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white">
+        <main className="py-4 bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white">
             <h2 className="text-xl font-bold text-center mb-6"> Stack In This Project</h2>
 
-            <div className="flex justify-center space-x-6 md:space-x-12">
+            <div className="flex justify-center space-x-6">
                 {/* Next.js */}
                 <div className="flex flex-col items-center">
                     <SiNextdotjs className="text-2xl hover:text-gray-300 transition" />
@@ -39,7 +39,7 @@ const Stack = () => {
                     <span className="mt-2">MongoDB</span>
                 </div>
             </div>
-        </section>
+        </main>
     );
 };
 
