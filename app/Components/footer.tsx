@@ -1,8 +1,16 @@
 import { FaFacebookF, FaInstagram, FaYoutube, FaTiktok, FaGithub } from "react-icons/fa";
+import Link from "next/link";
 
 const Footer = () => {
     return (
-        <footer className="bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white shadow-md py-10">
+        <footer className="bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white shadow-md py-6">
+
+            <Link
+                href="/store/dashboard"
+                className="text-sm ml-96">
+                Test dashboard
+            </Link>
+
             <div className="container mx-auto px-6 flex justify-center space-x-6 text-lg">
                 {/* Facebook */}
                 <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">

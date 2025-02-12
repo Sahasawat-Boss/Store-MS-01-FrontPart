@@ -25,7 +25,7 @@ const SignIn = () => {
 
                 // Save token to localStorage
                 localStorage.setItem("token", token);
-                router.push('/dashboard')
+                router.push('/store/dashboard')
 
                 // --------Show modal Sucess
                 Swal.fire({
