@@ -19,6 +19,7 @@ interface SessionData {
 interface SessionContextType {
     session: SessionData | null;
     setSession: Dispatch<SetStateAction<SessionData | null>>;
+    isLoading: boolean;
 }
 
 // Create the context
@@ -31,33 +32,41 @@ interface SessionProviderProps {
 
 export const SessionProvider = ({ children }: SessionProviderProps) => {
     const [session, setSession] = useState<SessionData | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-    // ✅ Load session from localStorage when the component mounts
+    // ✅ Load session from localStorage before rendering UI
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        const loadSession = () => {
+            const token = localStorage.getItem("token");
 
-        if (token) {
-            try {
-                const decodedToken = JSON.parse(atob(token.split(".")[1])); // Decode JWT
-
-                if (decodedToken && decodedToken.user) {
-                    setSession({ token, user: decodedToken.user });
-                    console.log("✅ Session Updated:", decodedToken.user);
-                } else {
-                    console.error("⚠️ JWT is missing user data");
+            if (token) {
+                try {
+                    const decodedToken = JSON.parse(atob(token.split(".")[1])); // Decode JWT
+                    if (decodedToken?.user) {
+                        setSession({ token, user: decodedToken.user });
+                        console.log("✅ Session Restored:", decodedToken.user);
+                    } else {
+                        console.error("⚠️ Invalid token format, missing user data.");
+                        setSession(null);
+                    }
+                } catch (error) {
+                    console.error("❌ Error decoding JWT:", error);
                     setSession(null);
                 }
-            } catch (error) {
-                console.error("❌ Invalid JWT token:", error);
-                setSession(null);
             }
-        }
+
+            setIsLoading(false); // ✅ Mark session as loaded
+        };
+
+        loadSession();
     }, []);
 
-    console.log("Session state in Provider:", session); // ✅ Debugging session state
+    console.log("Session state in Provider:", session);
+
+    if (isLoading) return null; // ✅ Prevent UI from rendering before session loads
 
     return (
-        <SessionContext.Provider value={{ session, setSession }}>
+        <SessionContext.Provider value={{ session, setSession, isLoading }}>
             {children}
         </SessionContext.Provider>
     );

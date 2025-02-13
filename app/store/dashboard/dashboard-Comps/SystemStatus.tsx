@@ -44,7 +44,7 @@ const SystemStatus = () => {
     }, [status]);
     
     return (
-        <div className="p-6 bg-gray-900 text-white rounded-md shadow-md animate-fade-in">
+        <div className="px-14 py-6 bg-gray-900 text-white rounded-md shadow-md animate-fade-in">
             <h3 className="text-lg font-semibold mb-2">System Status</h3>
             <div className="grid grid-cols-2 gap-3 text-sm">
                 <p>Server: <span className={status.server === "Connected" ? "text-green-400" : "text-red-400"}>{status.server}</span></p>

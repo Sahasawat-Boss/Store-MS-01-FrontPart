@@ -41,8 +41,8 @@ const SignIn = () => {
                 setTimeout(() => {
                     Swal.fire({
                         title: "Welcome Back!",
-                        html: `<div style="text-align: center; font-size: 20px;">
-                                    <strong>${user.name}</strong>, welcome back! 🎉
+                        html: `<div style="text-align: center; font-size: 25px;">
+                                    <strong>${user.name}</strong>
                                 </div>`,
                         icon: "success",
                         timer: 1500, // ✅ Auto-close after 1.5 seconds

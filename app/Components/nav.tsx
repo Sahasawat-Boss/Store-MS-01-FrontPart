@@ -8,30 +8,17 @@ import { IoSettingsSharp } from "react-icons/io5";
 
 const Navbar = () => {
     const router = useRouter();
-    const { session, setSession } = useSession();
+    const { session, setSession, isLoading } = useSession();
     const [isClient, setIsClient] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false); // ✅ Modal state
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // ✅ Ensure component renders only after client-side hydration
     useEffect(() => {
         setIsClient(true);
     }, []);
 
-    // ✅ Force Navbar to update when session changes
-    useEffect(() => {
-        console.log("🔄 Navbar re-render triggered. Current session:", session);
-    }, [session]);
-
-    // ✅ Handle actual sign-out
-    const handleSignOut = () => {
-        localStorage.removeItem("token"); // ✅ Remove session token
-        setSession(null); // ✅ Clear session state
-        setIsModalOpen(false); // ✅ Close modal
-        router.push("/signIn"); // ✅ Redirect to sign-in page
-    };
-
-    // ✅ Ensure session is loaded before rendering UI
-    if (!isClient) return null;
+    // ✅ Prevent rendering while session is loading
+    if (!isClient || isLoading) return null;
 
     return (
         <>
@@ -47,20 +34,14 @@ const Navbar = () => {
                     <div className="flex items-center">
                         {session && session.user ? (
                             <>
-                                <Link
-                                    href="/profile"
-                                    className="mr-4 text-lg flex items-center group "
-                                >
+                                <Link href="/profile" className="mr-4 text-lg flex items-center group">
                                     <p className="text-sm mr-1 text-gray-300 group-hover:text-blue-400">
                                         {session.user.name}
                                     </p>
-                                    <IoSettingsSharp className="text-gray-300 group-hover:text-blue-400 " />
+                                    <IoSettingsSharp className="text-gray-300 group-hover:text-blue-400" />
                                 </Link>
 
-                                <button
-                                    onClick={() => setIsModalOpen(true)} // ✅ Open modal on click
-                                    className="text-sm hover:text-red-400 "
-                                >
+                                <button onClick={() => setIsModalOpen(true)} className="text-sm hover:text-red-400">
                                     Sign Out
                                 </button>
                             </>
@@ -81,13 +62,18 @@ const Navbar = () => {
                         <hr className="border-t-2 border-gray-300 mt-2 mb-6" />
                         <div className="flex justify-center space-x-4">
                             <button
-                                onClick={() => setIsModalOpen(false)} // ✅ Close modal
+                                onClick={() => setIsModalOpen(false)}
                                 className="px-2 py-1 text-white bg-gray-500 rounded-sm hover:scale-110 hover:bg-gray-400"
                             >
                                 Cancel
                             </button>
                             <button
-                                onClick={handleSignOut} // ✅ Confirm sign-out
+                                onClick={() => {
+                                    localStorage.removeItem("token");
+                                    setSession(null);
+                                    setIsModalOpen(false);
+                                    router.push("/signIn");
+                                }}
                                 className="px-2 py-1 bg-red-500 text-white rounded-sm hover:scale-110 hover:bg-red-400"
                             >
                                 Confirm
