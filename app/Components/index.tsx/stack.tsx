@@ -5,10 +5,10 @@ import { SiNextdotjs, SiExpress, SiPrisma, SiMongodb } from "react-icons/si";
 
 const Stack = () => {
     return (
-        <main className="py-4 bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white">
-            <h2 className="text-xl font-bold text-center mb-6"> Stack In This Project</h2>
+        <main className="py-4 bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white animate-fade-in">
+            <h2 className="text-xl font-bold text-center mb-6 animate-fade-in-down"> Stack In This Project</h2>
 
-            <div className="flex justify-center space-x-6">
+            <div className="flex justify-center space-x-6 animate-fade-in-up">
                 {/* Next.js */}
                 <div className="flex flex-col items-center">
                     <SiNextdotjs className="text-2xl hover:text-gray-300 transition" />

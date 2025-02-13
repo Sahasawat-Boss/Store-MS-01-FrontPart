@@ -17,9 +17,9 @@ const StoreForm = () => {
 
     return (
         <div className="mx-auto bg-gray-100 shadow-lg py-6 px-10">
-            <h2 className="text-xl font-bold text-teal-700 border-b border-teal-700 pb-2 mb-4">Store Information</h2>
+            <h2 className=" font-bold text-teal-700 border-b border-teal-700 pb-2 mb-4">Store Information</h2>
 
-            <form className="space-y-4">
+            <form className="space-y-4 text-md">
                 <InputField
                     label="Store Name"
                     name="shopName"
@@ -46,9 +46,14 @@ const StoreForm = () => {
                     value={form.taxId}
                     onChange={handleChange} />
 
-                <button className="flex items-center justify-center w-fit py-2 px-4 mt-4 text-white bg-teal-700 hover:bg-teal-800 rounded">
-                    💾 Save
-                </button>
+                <div className="flex gap-1.5">
+                    <button className="flex items-center justify-center w-fit py-2 px-4 mt-4 text-white bg-teal-700 hover:bg-teal-800 rounded">
+                        Clear
+                    </button>
+                    <button className="flex items-center justify-center w-fit py-2 px-4 mt-4 text-white bg-teal-700 hover:bg-teal-800 rounded">
+                        💾 Save
+                    </button>
+                </div>
             </form>
         </div>
     );

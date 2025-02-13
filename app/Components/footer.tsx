@@ -5,11 +5,13 @@ const Footer = () => {
     return (
         <footer className="bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white shadow-md py-6">
 
-            <Link
-                href="/store/dashboard"
-                className="text-sm ml-96">
-                Test dashboard
-            </Link>
+            <div className="flex justify-center items-center mb-2">
+                <Link
+                    href="/store/dashboard"
+                    className="text-sm text-gray-500">
+                    Test dashboard
+                </Link>
+            </div>
 
             <div className="container mx-auto px-6 flex justify-center space-x-6 text-lg">
                 {/* Facebook */}

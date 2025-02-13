@@ -2,26 +2,101 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSession } from "../context/SessionProvider";
+import { IoSettingsSharp } from "react-icons/io5";
 
 const Navbar = () => {
     const router = useRouter();
+    const { session, setSession } = useSession();
+    const [isClient, setIsClient] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false); // ✅ Modal state
+
+    // ✅ Ensure component renders only after client-side hydration
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    // ✅ Force Navbar to update when session changes
+    useEffect(() => {
+        console.log("🔄 Navbar re-render triggered. Current session:", session);
+    }, [session]);
+
+    // ✅ Handle actual sign-out
+    const handleSignOut = () => {
+        localStorage.removeItem("token"); // ✅ Remove session token
+        setSession(null); // ✅ Clear session state
+        setIsModalOpen(false); // ✅ Close modal
+        router.push("/signIn"); // ✅ Redirect to sign-in page
+    };
+
+    // ✅ Ensure session is loaded before rendering UI
+    if (!isClient) return null;
 
     return (
-        <nav className="bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white shadow-md">
-            <div className=" px-8 py-3 flex justify-between">
-                <button onClick={() => router.push("/")} className="hover:text-blue-400 transition text-lg">
-                    Store-MS-01
-                </button>
-                <div className="text-sm flex gap-4">
-                    <ul>About</ul>
-                    <Link
-                        href="/signIn">
-                        Sign In
-                    </Link>
-                </div>
+        <>
+            {/* ✅ Navbar */}
+            <nav className="bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white shadow-md">
+                <div className="px-8 py-3 flex justify-between items-center">
+                    {/* ✅ Navbar Title */}
+                    <button onClick={() => router.push("/")} className="hover:text-blue-400 transition text-lg">
+                        Store-MS-01 <span className="text-[0.1rem]">(Mini)</span>
+                    </button>
 
-            </div>
-        </nav>
+                    {/* ✅ Ensure items align properly in a row */}
+                    <div className="flex items-center">
+                        {session && session.user ? (
+                            <>
+                                <Link
+                                    href="/profile"
+                                    className="mr-4 text-lg flex items-center group "
+                                >
+                                    <p className="text-sm mr-1 text-gray-300 group-hover:text-blue-400">
+                                        {session.user.name}
+                                    </p>
+                                    <IoSettingsSharp className="text-gray-300 group-hover:text-blue-400 " />
+                                </Link>
+
+                                <button
+                                    onClick={() => setIsModalOpen(true)} // ✅ Open modal on click
+                                    className="text-sm hover:text-red-400 "
+                                >
+                                    Sign Out
+                                </button>
+                            </>
+                        ) : (
+                            <Link href="/signIn" className="text-sm hover:text-blue-400 transition">
+                                Sign In
+                            </Link>
+                        )}
+                    </div>
+                </div>
+            </nav>
+
+            {/* ✅ Logout Confirmation Modal */}
+            {isModalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-65 flex justify-center items-center z-50">
+                    <div className="flex flex-col justify-center bg-white text-black rounded-md shadow-xl h-40 p-6 px-10">
+                        <h3 className="text-lg font-semibold">Are you sure you want to sign out?</h3>
+                        <hr className="border-t-2 border-gray-300 mt-2 mb-6" />
+                        <div className="flex justify-center space-x-4">
+                            <button
+                                onClick={() => setIsModalOpen(false)} // ✅ Close modal
+                                className="px-2 py-1 text-white bg-gray-500 rounded-sm hover:scale-110 hover:bg-gray-400"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleSignOut} // ✅ Confirm sign-out
+                                className="px-2 py-1 bg-red-500 text-white rounded-sm hover:scale-110 hover:bg-red-400"
+                            >
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
     );
 };
 
