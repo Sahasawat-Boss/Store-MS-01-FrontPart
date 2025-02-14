@@ -11,6 +11,7 @@ const Navbar = () => {
     const { session, setSession, isLoading } = useSession();
     const [isClient, setIsClient] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false); // ✅ Track dropdown visibility
 
     // ✅ Ensure component renders only after client-side hydration
     useEffect(() => {
@@ -33,18 +34,37 @@ const Navbar = () => {
                     {/* ✅ Ensure items align properly in a row */}
                     <div className="flex items-center">
                         {session && session.user ? (
-                            <>
-                                <Link href="/profile" className="mr-4 text-lg flex items-center group">
-                                    <p className="text-sm mr-1 text-gray-300 group-hover:text-blue-400">
+                            <div
+                                className="relative"
+                                onMouseEnter={() => setIsDropdownOpen(true)}
+                                onMouseLeave={() => setIsDropdownOpen(false)}
+                            >
+                                {/* ✅ Profile Link (Triggers Dropdown) */}
+                                <div className="flex items-center group hover:cursor-pointer">
+                                    <p className="text-base mr-1 group-hover:text-blue-400">
                                         {session.user.name}
                                     </p>
-                                    <IoSettingsSharp className="text-gray-300 group-hover:text-blue-400" />
-                                </Link>
+                                    <IoSettingsSharp className="text-sm group-hover:text-blue-400" />
+                                </div>
 
-                                <button onClick={() => setIsModalOpen(true)} className="text-sm hover:text-red-400">
-                                    Sign Out
-                                </button>
-                            </>
+                                {/* ✅ Dropdown Menu */}
+                                {isDropdownOpen && (
+                                    <div className="absolute top-6 right-0 w-40 bg-white shadow-lg text-black z-50">
+                                        <Link
+                                            href="/profile"
+                                            className="block px-4 py-2 hover:bg-indigo-200 transition"
+                                        >
+                                            Profile
+                                        </Link>
+                                        <button
+                                            onClick={() => setIsModalOpen(true)}
+                                            className="block w-full text-left px-4 py-2 text-red-500 hover:bg-indigo-200 transition"
+                                        >
+                                            Sign Out
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         ) : (
                             <Link href="/signIn" className="text-sm hover:text-blue-400 transition">
                                 Sign In

@@ -16,13 +16,37 @@ const SignIn = () => {
 
     const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!username.trim() || !password.trim()) {
+            Swal.fire({
+                title: "Missing Fields",
+                text: "Please enter both username and password.",
+                icon: "warning",
+                confirmButtonText: "OK",
+                confirmButtonColor: "#2243cc",
+            });
+            return;
+        }
+
         setLoading(true);
 
         try {
-            const payload = { username, password }; // ✅ Ensure password is included
-            const response = await axios.post(`${config.apiUrl}/api/user/signIn`, payload);
+            const payload = { username, password };
 
-            if (response.data.token && response.data.user) {
+            // ✅ Prevent Axios from treating 401 as an error
+            const response = await axios.post(`${config.apiUrl}/api/user/signIn`, payload, {
+                validateStatus: (status) => status < 500, // Allow handling 401 in `response.data`
+            });
+
+            if (response.status === 401) {
+                Swal.fire({
+                    title: "Invalid Login",
+                    text: "Invalid username or password. Please try again.",
+                    icon: "warning",
+                    confirmButtonText: "OK",
+                    confirmButtonColor: "#2243cc",
+                });
+            } else if (response.data.token && response.data.user) {
                 const { token, user } = response.data;
 
                 // ✅ Store token in localStorage
@@ -34,29 +58,26 @@ const SignIn = () => {
                 // ✅ Dispatch a storage event to notify Navbar
                 window.dispatchEvent(new Event("storage"));
 
-                // ✅ Redirect to dashboard immediately
+                // ✅ Redirect to dashboard
                 router.push("/store/dashboard");
 
-                // ✅ Show Welcome Modal for 2 seconds
+                // ✅ Show Welcome Modal
                 setTimeout(() => {
                     Swal.fire({
                         title: "Welcome Back!",
-                        html: `<div style="text-align: center; font-size: 25px;">
-                                    <strong>${user.name}</strong>
-                                </div>`,
+                        html: `<div style="text-align: center; font-size: 25px;"><strong>${user.name}</strong></div>`,
                         icon: "success",
-                        timer: 1500, // ✅ Auto-close after 1.5 seconds
-                        showConfirmButton: false, // ✅ No "OK" button needed
+                        timer: 1500,
+                        showConfirmButton: false,
                         showClass: { popup: "animate__animated animate__fadeInDown" },
                         hideClass: { popup: "animate__animated animate__fadeOutUp" },
                     });
-                }, 500); // ✅ Slight delay to ensure modal shows on the new page
+                }, 500);
 
                 // ✅ Clear input fields
                 setUsername("");
                 setPassword("");
             } else {
-                // ❌ Show warning modal if login fails
                 Swal.fire({
                     title: "Invalid Login",
                     text: "The username or password is incorrect. Please try again.",
@@ -66,27 +87,21 @@ const SignIn = () => {
                     showClass: { popup: "animate__animated animate__shakeX" },
                 });
             }
-        } catch (error: unknown) { // ✅ Use `unknown` instead of `any`
+        } catch (error: unknown) {
             console.error("❌ Login Error:", error);
 
             let errorMessage = "An unexpected error occurred.";
 
             if (error instanceof AxiosError && error.response) {
-                // ✅ If it's an Axios error, get error message from response
                 errorMessage = error.response.data?.message || "Invalid credentials.";
-            } else if (error instanceof Error) {
-                // ✅ If it's a generic JavaScript error
-                errorMessage = error.message;
             }
 
-            // ❌ Show error modal
             Swal.fire({
                 title: "Sign In Failed",
                 text: errorMessage,
                 icon: "error",
                 confirmButtonText: "OK",
                 confirmButtonColor: "#2243cc",
-                showClass: { popup: "animate__animated animate__shakeX" },
             });
         } finally {
             setLoading(false);
@@ -108,7 +123,6 @@ const SignIn = () => {
                             placeholder="Enter your username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            required
                         />
                     </div>
                     <div>
@@ -119,7 +133,6 @@ const SignIn = () => {
                             placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            required
                         />
                     </div>
                     <button

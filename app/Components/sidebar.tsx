@@ -18,9 +18,9 @@ const Sidebar = () => {
             <div className="flex items-center border-b border-gray-700">
                 <button
                     onClick={() => setIsOpen(!isOpen)}
-                    className="text-white p-4 rounded-md hover:bg-gray-700 transition-all"
+                    className="text-white p-4 rounded-sm hover:bg-gray-700 transition-all focus:border-none"
                 >
-                    <MdMenu size={22} />
+                    <MdMenu size={24} />
                 </button>
                 <span
                     className={`ml-3 text-white font-bold transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 invisible"
@@ -31,13 +31,13 @@ const Sidebar = () => {
             </div>
 
             {/* Sidebar Navigation */}
-            <nav className="flex flex-col flex-grow mt-5 space-y-2 text-white text-[14px]">
-                <SidebarItem href="/store/dashboard" icon={<MdDashboardCustomize  size={20} />} text="Dashboard" isOpen={isOpen} />
-                <SidebarItem href="/store/shop" icon={<FaShoppingCart size={20} />} text="Shop" isOpen={isOpen} />
-                <SidebarItem href="/store/sale" icon={<MdPointOfSale  size={20} />} text="Sale" isOpen={isOpen} />
-                <SidebarItem href="/store/repair" icon={<GiAutoRepair size={20} />} text="Repair" isOpen={isOpen} />
-                <SidebarItem href="/store/storeConfig" icon={<FaCog size={20} />} text="Store Config" isOpen={isOpen} />
-                <SidebarItem href="/store/userConfig" icon={<FaUserFriends  size={20} />} text="User Config" isOpen={isOpen} />
+            <nav className="flex flex-col flex-grow mt-2 space-y-2 text-white text-[14.5px]">
+                <SidebarItem href="/store/dashboard" icon={<MdDashboardCustomize  size={24} />} text="Dashboard" isOpen={isOpen} />
+                <SidebarItem href="/store/shop" icon={<FaShoppingCart size={24} />} text="Shop" isOpen={isOpen} />
+                <SidebarItem href="/store/sale" icon={<MdPointOfSale  size={24} />} text="Sale" isOpen={isOpen} />
+                <SidebarItem href="/store/repair" icon={<GiAutoRepair size={24} />} text="Repair" isOpen={isOpen} />
+                <SidebarItem href="/store/storeConfig" icon={<FaCog size={24} />} text="Store Config" isOpen={isOpen} />
+                <SidebarItem href="/store/userConfig" icon={<FaUserFriends  size={24} />} text="User Config" isOpen={isOpen} />
             </nav>
         </aside>
     );
@@ -51,7 +51,7 @@ const SidebarItem = ({ href, icon, text, isOpen }: { href: string; icon: React.R
     return (
         <Link
             href={href}
-            className={`flex items-center px-4 py-3 transition-all duration-300 ease-in-out rounded-md
+            className={`flex items-center px-4 py-3 transition-all duration-300 ease-in-out rounded-sm
                 ${isActive ? "bg-blue-900" : "hover:bg-blue-900"}`}
         >
             {/* ✅ Fixed icon size and alignment */}

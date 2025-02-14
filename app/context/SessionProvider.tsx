@@ -44,7 +44,7 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
                     const decodedToken = JSON.parse(atob(token.split(".")[1])); // Decode JWT
                     if (decodedToken?.user) {
                         setSession({ token, user: decodedToken.user });
-                        console.log("✅ Session Restored:", decodedToken.user);
+                        console.log("✅ Session Restored:", decodedToken.user); // ✅ Log only when restoring session
                     } else {
                         console.error("⚠️ Invalid token format, missing user data.");
                         setSession(null);
@@ -61,7 +61,12 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
         loadSession();
     }, []);
 
-    console.log("Session state in Provider:", session);
+    // ✅ Log only when session updates (instead of on every render)
+    useEffect(() => {
+        if (session) {
+            console.log("Session state updated in Provider:", session);
+        }
+    }, [session]);
 
     if (isLoading) return null; // ✅ Prevent UI from rendering before session loads
 
