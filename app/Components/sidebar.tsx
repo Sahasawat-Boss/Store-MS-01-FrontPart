@@ -12,7 +12,7 @@ const Sidebar = () => {
 
     return (
         <aside
-            className={`h-full ${isOpen ? "w-40" : "w-14"} flex flex-col transition-[width] duration-300 ease-in-out bg-gradient-to-r from-black via-gray-950 to-gray-900 shadow-lg overflow-hidden`}
+            className={`h-full ${isOpen ? "w-44" : "w-14"} flex flex-col transition-[width] duration-300 ease-in-out bg-gradient-to-r from-black via-gray-950 to-gray-900 shadow-lg overflow-hidden`}
         >
             {/* Sidebar Header (Toggle Button) */}
             <div className="flex items-center border-b border-gray-700">
@@ -23,7 +23,7 @@ const Sidebar = () => {
                     <MdMenu size={24} />
                 </button>
                 <span
-                    className={`ml-3 text-white font-bold transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 invisible"
+                    className={`ml-3 text-white font-bold transition-opacity duration-300 ${isOpen ? "opacity-100 pl-1" : "opacity-0 invisible"
                         }`}
                 >
                     Menu
@@ -33,7 +33,7 @@ const Sidebar = () => {
             {/* Sidebar Navigation */}
             <nav className="flex flex-col flex-grow mt-2 space-y-2 text-white text-[14.5px]">
                 <SidebarItem href="/store/dashboard" icon={<MdDashboardCustomize  size={24} />} text="Dashboard" isOpen={isOpen} />
-                <SidebarItem href="/store/shop" icon={<FaShoppingCart size={24} />} text="Shop" isOpen={isOpen} />
+                <SidebarItem href="/store/procurement" icon={<FaShoppingCart size={24} />} text="Procurement" isOpen={isOpen} />
                 <SidebarItem href="/store/sale" icon={<MdPointOfSale  size={24} />} text="Sale" isOpen={isOpen} />
                 <SidebarItem href="/store/repair" icon={<GiAutoRepair size={24} />} text="Repair" isOpen={isOpen} />
                 <SidebarItem href="/store/storeConfig" icon={<FaCog size={24} />} text="Store Config" isOpen={isOpen} />
